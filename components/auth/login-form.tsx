@@ -17,6 +17,7 @@ export default function LoginForm() {
     defaultValues: { email: "", password: "" },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function onSubmit(data: any) {
     setLoading(true);
 
@@ -39,8 +40,10 @@ export default function LoginForm() {
     toast.success("Welcome back! ");
 
     if (role === "ADMIN") {
+      // eslint-disable-next-line react-hooks/immutability
       window.location.href = "/admin/analytics";
     } else {
+      // eslint-disable-next-line react-hooks/immutability
       window.location.href = "/dashboard";
     }
   }
