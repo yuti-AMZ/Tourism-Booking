@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Clock, Tag, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 const packages = [
   { id: 1, title: "Lalibela Pilgrimage & Rock Churches", description: "Explore the 11 UNESCO-listed rock-hewn churches of Lalibela, attend a traditional Orthodox ceremony, and walk the ancient pilgrimage routes.", duration: "4-7", theme: "culture", days: "4 Days", price: 480, image: "/images/lalibela.jpg", highlights: ["Rock-hewn churches tour", "Orthodox ceremony", "Local guide"] },
-  { id: 2, title: "Simien Mountains Trek", description: "Trek through dramatic escarpments and deep valleys. Spot Gelada baboons, Ethiopian wolves, and Walia ibex in their natural habitat.", duration: "4-7", theme: "adventure", days: "6 Days", price: 570, image: "/images/Simien Mountains, Ethiopia.jpg", highlights: ["Guided mountain trek", "Wildlife spotting", "Camping under stars"] },
+  { id: 2, title: "Simien Mountains Trek", description: "Trek through dramatic escarpments and deep valleys. Spot Gelada baboons, Ethiopian wolves, and Walia ibex in their natural habitat.", duration: "4-7", theme: "adventure", days: "6 Days", price: 570, image: "/images/Simien-mountains.jpg", highlights: ["Guided mountain trek", "Wildlife spotting", "Camping under stars"] },
   { id: 3, title: "Danakil Depression Expedition", description: "Venture into one of Earth's most extreme landscapes — sulfur springs, lava lakes, and vast salt flats in the Afar region.", duration: "2-3", theme: "adventure", days: "3 Days", price: 390, image: "/images/denakil.jpg", highlights: ["Erta Ale lava lake", "Salt flat walk", "Afar village visit"] },
   { id: 4, title: "Omo Valley Tribal Experience", description: "Immerse yourself in the cultures of 50+ indigenous tribes — the Mursi, Hamar, and Karo peoples of southern Ethiopia.", duration: "8plus", theme: "culture", days: "8 Days", price: 950, image: "/images/omo.jpg", highlights: ["Mursi tribe visit", "Hamar bull jumping", "Local market tours"] },
   { id: 5, title: "Bale Mountains Wildlife Safari", description: "Track the endangered Ethiopian wolf and mountain nyala across the Sanetti Plateau — Africa's largest Afroalpine ecosystem.", duration: "4-7", theme: "wildlife", days: "5 Days", price: 620, image: "/images/Bale Mountains.jpg", highlights: ["Ethiopian wolf tracking", "Harenna forest walk", "Bird watching"] },
@@ -36,7 +37,14 @@ export default function PackagesPage() {
   return (
     <div className="min-h-screen">
       <section className="relative text-center text-white" style={{ height: "60vh", minHeight: "300px" }}>
-        <img src="/images/Simien Mountains, Ethiopia.jpg" alt="Ethiopia" className="absolute inset-0 w-full h-full object-cover" />
+        <Image
+          src="/images/Simien-mountains.jpg"
+          alt="Ethiopia"
+          fill
+          className="absolute inset-0 object-cover"
+          priority
+          sizes="100vw"
+        />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center">
           <h1 className="text-5xl font-bold mb-3">Travel Packages</h1>
@@ -46,19 +54,33 @@ export default function PackagesPage() {
 
       <section className="bg-card border-b py-4 px-4">
         <div className="max-w-5xl mx-auto flex flex-wrap gap-3 items-end">
-          <div className="flex-1 min-w-[200px]">
+          <div className="flex-1 min-w-50">
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input className="pl-8" placeholder="Search packages..." value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={(e) => e.key === "Enter" && applyFilters()} />
             </div>
           </div>
-          <select value={duration} onChange={(e) => setDuration(e.target.value)} className="border border-input rounded-lg px-3 py-1.5 text-sm bg-background outline-none focus:ring-2 focus:ring-ring">
+          <label className="sr-only" htmlFor="duration-select">Duration</label>
+          <select
+            id="duration-select"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className="border border-input rounded-lg px-3 py-1.5 text-sm bg-background outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Duration"
+          >
             <option value="all">Any Duration</option>
             <option value="2-3">2–3 days</option>
             <option value="4-7">4–7 days</option>
             <option value="8plus">8+ days</option>
           </select>
-          <select value={theme} onChange={(e) => setTheme(e.target.value)} className="border border-input rounded-lg px-3 py-1.5 text-sm bg-background outline-none focus:ring-2 focus:ring-ring">
+          <label className="sr-only" htmlFor="theme-select">Theme</label>
+          <select
+            id="theme-select"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            className="border border-input rounded-lg px-3 py-1.5 text-sm bg-background outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Theme"
+          >
             <option value="all">All Themes</option>
             <option value="adventure">Adventure</option>
             <option value="culture">Culture</option>
@@ -80,7 +102,15 @@ export default function PackagesPage() {
             {filtered.map((pkg) => (
               <div key={pkg.id} className="border rounded-xl overflow-hidden bg-card hover:shadow-lg transition-all hover:-translate-y-1 duration-200 flex flex-col">
                 <div className="relative">
-                  <img src={pkg.image} alt={pkg.title} className="w-full h-44 object-cover" />
+                  <div className="w-full h-44 relative">
+                    <Image
+                      src={pkg.image}
+                      alt={pkg.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                    />
+                  </div>
                   <span className="absolute top-3 left-3 text-xs bg-primary text-primary-foreground px-2.5 py-1 rounded-full capitalize">
                     {pkg.theme}
                   </span>
@@ -91,7 +121,7 @@ export default function PackagesPage() {
                   <ul className="space-y-1 mb-4">
                     {pkg.highlights.map((h) => (
                       <li key={h} className="text-xs text-muted-foreground flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />{h}
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />{h}
                       </li>
                     ))}
                   </ul>

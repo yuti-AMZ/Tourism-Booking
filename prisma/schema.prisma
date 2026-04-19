@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   name      String?
   email     String   @unique
   password  String?
@@ -26,7 +26,7 @@ model User {
 }
 
 model Destination {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid())
   slug        String   @unique
   title       String
   description String
@@ -47,9 +47,9 @@ model Destination {
 }
 
 model Booking {
-  id            String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String        @db.ObjectId
-  destinationId String        @db.ObjectId
+  id            String        @id @default(uuid())
+  userId        String
+  destinationId String
 
   checkIn       DateTime
   checkOut      DateTime
@@ -64,9 +64,9 @@ model Booking {
 }
 
 model Favorite {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId
-  destinationId String   @db.ObjectId
+  id            String   @id @default(uuid())
+  userId        String
+  destinationId String
 
   createdAt     DateTime @default(now())
 
@@ -77,9 +77,9 @@ model Favorite {
 }
 
 model Review {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId
-  destinationId String   @db.ObjectId
+  id            String   @id @default(uuid())
+  userId        String
+  destinationId String
 
   rating        Int
   comment       String?
@@ -91,8 +91,8 @@ model Review {
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId
+  id                 String  @id @default(uuid())
+  userId             String
   type               String
   provider           String
   providerAccountId  String
@@ -111,16 +111,16 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   sessionToken String   @unique
-  userId       String   @db.ObjectId
+  userId       String
   expires      DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
   identifier String
   token      String   @unique
   expires    DateTime

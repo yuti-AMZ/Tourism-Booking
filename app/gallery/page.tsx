@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const photos = [
   { src: "/images/lalibela.jpg", caption: "Lalibela Rock-Hewn Churches", category: "Heritage" },
-  { src: "/images/Simien Mountains, Ethiopia.jpg", caption: "Simien Mountains", category: "Landscape" },
+  { src: "/images/Simien-mountains.jpg", caption: "Simien Mountains", category: "Landscape" },
   { src: "/images/denakil.jpg", caption: "Danakil Depression", category: "Landscape" },
   { src: "/images/omo.jpg", caption: "Omo Valley Tribes", category: "Culture" },
   { src: "/images/gondar.jpg", caption: "Gondar Royal Enclosure", category: "Heritage" },
@@ -32,7 +33,14 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen">
       <section className="relative text-center text-white" style={{ height: "60vh", minHeight: "300px" }}>
-        <img src="/images/omo.jpg" alt="Gallery" className="absolute inset-0 w-full h-full object-cover" />
+        <Image
+          src="/images/omo.jpg"
+          alt="Gallery"
+          fill
+          className="absolute inset-0 object-cover"
+          priority
+          sizes="100vw"
+        />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center">
           <h1 className="text-5xl font-bold mb-3">Gallery</h1>
@@ -43,10 +51,14 @@ export default function GalleryPage() {
       <section className="max-w-5xl mx-auto px-4 pt-8 pb-2">
         <div className="flex flex-wrap gap-2 justify-center">
           {categories.map((cat) => (
-            <button key={cat} onClick={() => setActive(cat)}
+            <button
+              key={cat}
+              onClick={() => setActive(cat)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all ${
                 active === cat ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary hover:text-primary"
-              }`}>
+              }`}
+              aria-label={cat}
+            >
               {cat}
             </button>
           ))}
@@ -57,7 +69,14 @@ export default function GalleryPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((photo, i) => (
             <div key={i} className="relative group cursor-pointer rounded-xl overflow-hidden aspect-square" onClick={() => setLightbox(i)}>
-              <img src={photo.src} alt={photo.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <Image
+                src={photo.src}
+                alt={photo.caption}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                priority={i < 4}
+              />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100">
                 <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full w-fit mb-1">{photo.category}</span>
                 <p className="text-white text-xs font-medium">{photo.caption}</p>
@@ -69,20 +88,44 @@ export default function GalleryPage() {
 
       {lightbox !== null && (
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setLightbox(null)}>
-          <button className="absolute top-4 right-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2" onClick={() => setLightbox(null)}>
+          <button
+            className="absolute top-4 right-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2"
+            onClick={() => setLightbox(null)}
+            aria-label="Close lightbox"
+            title="Close"
+          >
             <X className="w-5 h-5" />
           </button>
-          <button className="absolute left-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2" onClick={(e) => { e.stopPropagation(); prev(); }}>
+          <button
+            className="absolute left-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2"
+            onClick={(e) => { e.stopPropagation(); prev(); }}
+            aria-label="Previous image"
+            title="Previous"
+          >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <div onClick={(e) => e.stopPropagation()} className="max-w-3xl w-full">
-            <img src={filtered[lightbox].src} alt={filtered[lightbox].caption} className="w-full max-h-[75vh] object-contain rounded-xl" />
+            <div className="relative w-full" style={{height: "75vh", minHeight: 300}}>
+              <Image
+                src={filtered[lightbox].src}
+                alt={filtered[lightbox].caption}
+                fill
+                className="object-contain rounded-xl"
+                sizes="(max-width: 640px) 100vw, 75vw"
+                priority
+              />
+            </div>
             <div className="text-center mt-3">
               <p className="text-white text-sm">{filtered[lightbox].caption}</p>
               <p className="text-white/50 text-xs mt-1">{lightbox + 1} / {filtered.length}</p>
             </div>
           </div>
-          <button className="absolute right-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2" onClick={(e) => { e.stopPropagation(); next(); }}>
+          <button
+            className="absolute right-4 text-white bg-white/20 hover:bg-white/30 rounded-full p-2"
+            onClick={(e) => { e.stopPropagation(); next(); }}
+            aria-label="Next image"
+            title="Next"
+          >
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
