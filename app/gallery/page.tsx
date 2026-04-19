@@ -4,16 +4,18 @@ import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const photos = [
-  { src: "https://images.unsplash.com/photo-1580746738099-b2d4b5d4b9b4?w=800&auto=format&fit=crop", caption: "Lalibela Rock-Hewn Churches", category: "Heritage" },
-  { src: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&auto=format&fit=crop", caption: "Simien Mountains", category: "Landscape" },
-  { src: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&auto=format&fit=crop", caption: "Danakil Depression", category: "Landscape" },
-  { src: "https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=800&auto=format&fit=crop", caption: "Omo Valley Tribes", category: "Culture" },
-  { src: "https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=800&auto=format&fit=crop", caption: "Lake Tana Monasteries", category: "Heritage" },
-  { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop", caption: "Addis Ababa City", category: "City" },
-  { src: "https://images.unsplash.com/photo-1508264165352-cb2ecb3f9bfc?w=800&auto=format&fit=crop", caption: "Ethiopian Highlands", category: "Landscape" },
-  { src: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&auto=format&fit=crop", caption: "Traditional Coffee Ceremony", category: "Culture" },
-  { src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800&auto=format&fit=crop", caption: "Ethiopian Wildlife", category: "Wildlife" },
-  { src: "https://images.unsplash.com/photo-1526392060635-9d6019884377?w=800&auto=format&fit=crop", caption: "Ancient Ruins", category: "Heritage" },
+  { src: "/images/lalibela.jpg", caption: "Lalibela Rock-Hewn Churches", category: "Heritage" },
+  { src: "/images/Simien Mountains, Ethiopia.jpg", caption: "Simien Mountains", category: "Landscape" },
+  { src: "/images/denakil.jpg", caption: "Danakil Depression", category: "Landscape" },
+  { src: "/images/omo.jpg", caption: "Omo Valley Tribes", category: "Culture" },
+  { src: "/images/gondar.jpg", caption: "Gondar Royal Enclosure", category: "Heritage" },
+  { src: "/images/entonto.jpg", caption: "Entoto Hills, Addis Ababa", category: "City" },
+  { src: "/images/ethio landscape.jpg", caption: "Ethiopian Highlands", category: "Landscape" },
+  { src: "/images/harar.jpg", caption: "Harar Old City", category: "Culture" },
+  { src: "/images/Bale Mountains.jpg", caption: "Bale Mountains", category: "Wildlife" },
+  { src: "/images/Axum.jpg", caption: "Axum Obelisks", category: "Heritage" },
+  { src: "/images/Axum1.jpg", caption: "Ancient Axum", category: "Heritage" },
+  { src: "/images/flag-ethiopia.jpg", caption: "Ethiopian Flag", category: "Culture" },
 ];
 
 const categories = ["All", "Heritage", "Landscape", "Culture", "Wildlife", "City"];
@@ -30,7 +32,7 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen">
       <section className="relative text-center text-white" style={{ height: "60vh", minHeight: "300px" }}>
-        <img src="https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=1400&auto=format&fit=crop" alt="Gallery" className="absolute inset-0 w-full h-full object-cover" />
+        <img src="/images/omo.jpg" alt="Gallery" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center">
           <h1 className="text-5xl font-bold mb-3">Gallery</h1>

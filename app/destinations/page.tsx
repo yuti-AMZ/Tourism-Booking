@@ -38,7 +38,7 @@ export default async function DestinationsPage({ searchParams }: Props) {
     <div className="min-h-screen">
       <div className="relative text-center text-white overflow-hidden" style={{ height: "60vh", minHeight: "320px" }}>
         <img
-          src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1400&auto=format&fit=crop"
+          src="/images/ethio landscape.jpg"
           alt="Ethiopia"
           className="absolute inset-0 w-full h-full object-cover"
         />

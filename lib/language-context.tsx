@@ -3,9 +3,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { translations, type Locale } from "./i18n";
 
+type TranslationValue = typeof translations.en;
+
 const LanguageContext = createContext<{
   locale: Locale;
-  t: typeof translations.en;
+  t: TranslationValue;
   setLocale: (l: Locale) => void;
 }>({
   locale: "en",
@@ -26,8 +28,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("lang", l);
   }
 
+  const t = translations[locale] as unknown as TranslationValue;
+
   return (
-    <LanguageContext.Provider value={{ locale, t: translations[locale], setLocale }}>
+    <LanguageContext.Provider value={{ locale, t, setLocale }}>
       {children}
     </LanguageContext.Provider>
   );

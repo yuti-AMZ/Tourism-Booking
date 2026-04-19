@@ -12,7 +12,7 @@ export default function AboutPage() {
     <div className="min-h-screen">
       <section className="relative" style={{ height: "70vh", minHeight: "400px" }}>
         <img
-          src="https://images.unsplash.com/photo-1580746738099-b2d4b5d4b9b4?w=1400&auto=format&fit=crop"
+          src="/images/lalibela.jpg"
           alt="Lalibela"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -89,7 +89,7 @@ export default function AboutPage() {
 
       <section className="relative py-16 px-6 overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1400&auto=format&fit=crop"
+          src="/images/Simien Mountains, Ethiopia.jpg"
           alt="Simien Mountains"
           className="absolute inset-0 w-full h-full object-cover"
         />
