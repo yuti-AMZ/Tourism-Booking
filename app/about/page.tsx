@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
 
 const team = [
   { name: "Hayat Z", role: "Founder & Product Lead" },

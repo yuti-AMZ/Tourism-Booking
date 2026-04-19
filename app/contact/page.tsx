@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+// ...existing code...
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -22,7 +22,7 @@ export default function ContactPage() {
       <section
         className="relative py-16 px-6 text-center text-white"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=1400&auto=format&fit=crop')",
+          backgroundImage: "url('/images/ethio landscape.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -104,7 +104,7 @@ export default function ContactPage() {
                 />
               </div>
               <Button type="submit" className="w-full font-semibold gap-2">
-                <Send className="w-4 h-4" /> Send Message
+                <span className="w-4 h-4">✉️</span> Send Message
               </Button>
             </form>
           )}
@@ -116,8 +116,8 @@ export default function ContactPage() {
 
           <div className="space-y-4">
             <div className="flex items-start gap-4 border rounded-2xl p-4 bg-card">
-              <div className="bg-primary/10 p-2.5 rounded-xl">
-                <Mail className="w-5 h-5 text-primary" />
+              <div className="bg-primary/10 p-2.5 rounded-xl flex items-center justify-center">
+                <span className="w-5 h-5 text-primary text-xl">✉️</span>
               </div>
               <div>
                 <p className="text-xs font-semibold text-muted-foreground uppercase mb-0.5">Email</p>
@@ -126,8 +126,8 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-start gap-4 border rounded-2xl p-4 bg-card">
-              <div className="bg-primary/10 p-2.5 rounded-xl">
-                <Phone className="w-5 h-5 text-primary" />
+              <div className="bg-primary/10 p-2.5 rounded-xl flex items-center justify-center">
+                <span className="w-5 h-5 text-primary text-xl">📞</span>
               </div>
               <div>
                 <p className="text-xs font-semibold text-muted-foreground uppercase mb-0.5">Phone</p>
@@ -137,8 +137,8 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-start gap-4 border rounded-2xl p-4 bg-card">
-              <div className="bg-primary/10 p-2.5 rounded-xl">
-                <MapPin className="w-5 h-5 text-primary" />
+              <div className="bg-primary/10 p-2.5 rounded-xl flex items-center justify-center">
+                <span className="w-5 h-5 text-primary text-xl">📍</span>
               </div>
               <div>
                 <p className="text-xs font-semibold text-muted-foreground uppercase mb-0.5">Office</p>

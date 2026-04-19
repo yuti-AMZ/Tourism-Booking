@@ -36,7 +36,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex">
       <div className="hidden md:block relative w-1/2">
         <img
-          src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900&auto=format&fit=crop"
+          src="/images/Simien Mountains, Ethiopia.jpg"
           alt="Simien Mountains Ethiopia"
           className="w-full h-full object-cover"
         />

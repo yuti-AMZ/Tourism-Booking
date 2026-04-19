@@ -56,13 +56,13 @@ export default async function DashboardPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
-            { label: "Total Bookings", value: bookings.length, icon: "🗓️" },
-            { label: "Saved Places", value: favorites.length, icon: "❤️" },
-            { label: "Confirmed", value: bookings.filter(b => b.status === "CONFIRMED").length, icon: "✅" },
-            { label: "Pending", value: bookings.filter(b => b.status === "PENDING").length, icon: "⏳" },
+            { label: "Total Bookings", value: bookings.length  },
+            { label: "Saved Places", value: favorites.length },
+            { label: "Confirmed", value: bookings.filter(b => b.status === "CONFIRMED").length },
+            { label: "Pending", value: bookings.filter(b => b.status === "PENDING").length },
           ].map((s) => (
             <div key={s.label} className="rounded-xl p-4 bg-card border hover:shadow-sm transition-shadow">
-              <div className="text-xl mb-1">{s.icon}</div>
+              <div className="text-xl mb-1"></div>
               <div className="text-2xl font-bold text-primary">{s.value}</div>
               <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
             </div>
