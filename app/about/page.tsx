@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const team = [
   { name: "Hayat Z", role: "Founder & Product Lead" },
@@ -12,10 +13,12 @@ export default function AboutPage() {
 
       {/* HERO SECTION */}
       <section className="relative" style={{ height: "70vh", minHeight: "400px" }}>
-        <img
+        <Image
           src="/images/lalibela.jpg"
           alt="Lalibela"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="absolute inset-0 object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-black/55" />
 
@@ -94,10 +97,12 @@ export default function AboutPage() {
 
       {/* CONTACT */}
       <section className="relative py-16 px-6">
-        <img
+        <Image
           src="/images/simien-mountains.jpg"
           alt="Simien Mountains"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="absolute inset-0 object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-black/70" />
 

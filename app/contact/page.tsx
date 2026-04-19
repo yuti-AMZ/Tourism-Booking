@@ -158,6 +158,7 @@ export default function ContactPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="Map showing Bole, Addis Ababa, Ethiopia"
             />
           </div>
         </aside>

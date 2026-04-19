@@ -1,4 +1,9 @@
 import type { Metadata, Viewport } from "next";
+
+type UserWithRole = {
+  name?: string;
+  role?: string;
+};
 import "./globals.css";
 import Providers from "./providers";
 import Navbar from "@/components/layout/Navbar";
@@ -25,15 +30,19 @@ export const viewport: Viewport = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await getAuthSession();
   const isLoggedIn = !!session;
-  const isAdmin = (session?.user as any)?.role === "ADMIN";
-  const userName = session?.user?.name ?? "User";
+  const user = session?.user as UserWithRole | undefined;
+  const isAdmin = user?.role === "ADMIN";
+  const userName = user?.name ?? "User";
   const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167x167.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="EthioTour" />
         <meta name="mobile-web-app-capable" content="yes" />

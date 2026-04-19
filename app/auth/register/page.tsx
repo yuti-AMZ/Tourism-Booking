@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,10 +36,13 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex">
       <div className="hidden md:block relative w-1/2">
-        <img
+        <Image
           src="/images/Simien Mountains, Ethiopia.jpg"
           alt="Simien Mountains Ethiopia"
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority
+          sizes="(min-width: 768px) 50vw, 100vw"
         />
         <div className="absolute inset-0 flex flex-col justify-end p-10 text-white bg-black/60">
           <h2 className="text-3xl font-bold mb-2">Welcome to EthioTour</h2>
