@@ -3,7 +3,6 @@
     "development"
   ],
   "hints": {
-    "no-inline-styles": "off",
-    "apple-touch-icons": "off"
+    "no-inline-styles": "off"
   }
 }

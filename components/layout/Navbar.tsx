@@ -13,11 +13,10 @@ export default async function Navbar() {
   const userName = session?.user?.name;
 
   const links = [
-    { href: "/destinations", label: "Destinations" },
-    { href: "/packages", label: "Packages" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
+    { href: "#destinations", label: "Destinations" },
+    { href: "#gallery", label: "Gallery" },
+    { href: "#about", label: "About" },
+    { href: "#contact", label: "Contact" },
   ];
 
   return (

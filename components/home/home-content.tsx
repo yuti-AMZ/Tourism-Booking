@@ -50,16 +50,8 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Features strip */}
-      <section className="bg-primary py-3">
-        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-8 text-primary-foreground font-medium text-sm">
-          <span>Ancient History</span>
-          <span>Wildlife Safari</span>
-          <span>Rock-Hewn Churches</span>
-          <span>Birthplace of Coffee</span>
-          <span>Simien Mountains</span>
-        </div>
-      </section>
+
+      
 
       {/* Why Ethiopia */}
       <section className="max-w-5xl mx-auto px-4 py-20">
