@@ -6,7 +6,7 @@ export default async function AppShell({ children }: { children: React.ReactNode
 
   if (!session) return <>{children}</>;
 
-  const isAdmin = (session.user as any)?.role === "ADMIN";
+  const isAdmin = session.user.role === "ADMIN";
   const userName = session.user?.name ?? "User";
   const userInitial = userName.charAt(0).toUpperCase();
 

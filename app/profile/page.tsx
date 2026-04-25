@@ -1,6 +1,7 @@
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import ProfileForm from "@/components/profile/profile-form";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export default async function ProfilePage() {
   const session = await getAuthSession();
   if (!session) redirect("/auth/login");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { id: true, name: true, email: true, avatar: true, role: true, createdAt: true },
@@ -27,7 +28,14 @@ export default async function ProfilePage() {
         <div className="max-w-2xl mx-auto text-center">
           <div className="w-20 h-20 rounded-full bg-yellow-400 flex items-center justify-center text-gray-900 text-3xl font-bold mx-auto mb-4">
             {user.avatar ? (
-              <img src={user.avatar} alt={user.name ?? ""} className="w-full h-full rounded-full object-cover" />
+              <Image
+                src={user.avatar}
+                alt={user.name ?? ""}
+                width={80}
+                height={80}
+                unoptimized
+                className="h-full w-full rounded-full object-cover"
+              />
             ) : (
               user.name?.charAt(0)?.toUpperCase() ?? "?"
             )}

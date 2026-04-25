@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { MapPin, Star } from "lucide-react";
 import BookingForm from "@/components/booking/booking-form";
 import FavoriteButton from "@/components/favorites/favorite-button";
@@ -26,7 +27,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
   if (!destination) notFound();
 
   const session = await getAuthSession();
-  const userId = (session?.user as any)?.id;
+  const userId = session?.user?.id;
 
   const [favorite, similar] = await Promise.all([
     userId ? prisma.favorite.findUnique({
@@ -82,10 +83,17 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
         </div>
       </div>
 
-      <p className="mt-5 text-muted-foreground leading-relaxed">{destination.description}</p>
+      <div className="mt-5 space-y-3">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="rounded-full bg-muted px-2 py-1 font-medium text-muted-foreground">
+            slug: {destination.slug}
+          </span>
+        </div>
+        <p className="text-muted-foreground leading-relaxed">{destination.description}</p>
+      </div>
 
       {userId && (
-        <div className="mt-10">
+        <div id="booking" className="mt-10 scroll-mt-24">
           <h2 className="text-xl font-bold mb-4">Book this destination</h2>
           <BookingForm
             destinationId={destination.id}
@@ -160,7 +168,14 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <Link key={d.id} href={`/destinations/${d.slug}`}>
                 <div className="border rounded-xl overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 duration-200 bg-card">
                   {d.images[0] ? (
-                    <img src={d.images[0]} alt={d.title} className="w-full h-32 object-cover" />
+                    <Image
+                      src={d.images[0]}
+                      alt={d.title}
+                      width={400}
+                      height={128}
+                      unoptimized
+                      className="h-32 w-full object-cover"
+                    />
                   ) : (
                     <div className="w-full h-32 bg-muted flex items-center justify-center text-3xl">🇪🇹</div>
                   )}

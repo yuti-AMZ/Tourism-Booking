@@ -1,15 +1,15 @@
 import Link from "next/link";
+import { User, BarChart3, ShieldCheck } from "lucide-react";
 import { getAuthSession } from "@/lib/auth";
 import LogoutButton from "./LogoutButton";
 import MobileMenu from "./MobileMenu";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import NavLinks from "./NavLinks";
-import { User, BarChart3, ShieldCheck } from "lucide-react";
 
 export default async function Navbar() {
   const session = await getAuthSession();
-  const isAdmin = (session?.user as any)?.role === "ADMIN";
+  const isAdmin = session?.user?.role === "ADMIN";
   const userName = session?.user?.name;
 
   const links = [
@@ -21,39 +21,44 @@ export default async function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 bg-background">
-      {/* Admin banner */}
       {isAdmin && (
-        <div className="bg-primary text-primary-foreground text-xs font-semibold text-center py-1 flex items-center justify-center gap-2">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          Admin Mode — <Link href="/admin/analytics" className="underline">Go to Analytics</Link>
-          {" · "}
-          <Link href="/admin/destinations/new" className="underline">Add Destination</Link>
+        <div className="bg-primary py-1 text-center text-xs font-semibold text-primary-foreground">
+          <div className="flex items-center justify-center gap-2">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>Admin Mode</span>
+            <Link href="/admin/analytics" className="underline">
+              Go to Analytics
+            </Link>
+            <span>|</span>
+            <Link href="/admin/destinations/new" className="underline">
+              Add Destination
+            </Link>
+          </div>
         </div>
       )}
 
       <div className="eth-stripe" />
 
-      <nav className="px-4 md:px-6 py-3 flex items-center justify-between bg-background border-b border-border backdrop-blur-sm bg-background/95">
+      <nav className="flex items-center justify-between border-b border-border bg-background/95 px-4 py-3 backdrop-blur-sm md:px-6">
         <Link href={isAdmin ? "/admin/analytics" : "/"} className="flex items-center gap-2">
-          <span className="text-2xl">🇪🇹</span>
-          <span className="font-bold text-xl text-primary">
-            EthioTour {isAdmin && <span className="text-xs text-yellow-600 font-normal ml-1">Admin</span>}
+          <span className="text-sm font-black tracking-[0.2em] text-primary">ET</span>
+          <span className="text-xl font-bold text-primary">
+            EthioTour
+            {isAdmin && <span className="ml-1 text-xs font-normal text-yellow-600">Admin</span>}
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-5 text-sm font-medium">
-
-          {/* Admin sees admin links, user sees public links */}
+        <div className="hidden items-center gap-5 text-sm font-medium md:flex">
           {isAdmin ? (
             <>
-              <Link href="/admin/analytics" className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-                <BarChart3 className="w-4 h-4" /> Analytics
+              <Link href="/admin/analytics" className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary">
+                <BarChart3 className="h-4 w-4" />
+                Analytics
               </Link>
-              <Link href="/admin/destinations/new" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="/admin/destinations/new" className="text-muted-foreground transition-colors hover:text-primary">
                 Add Destination
               </Link>
-              <Link href="/destinations" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="/destinations" className="text-muted-foreground transition-colors hover:text-primary">
                 Destinations
               </Link>
             </>
@@ -63,17 +68,15 @@ export default async function Navbar() {
 
           {session ? (
             <>
-              {/* User dashboard — only for non-admins */}
               {!isAdmin && (
-                <Link href="/dashboard" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/dashboard" className="text-muted-foreground transition-colors hover:text-primary">
                   Dashboard
                 </Link>
               )}
 
-              {/* Profile avatar */}
-              <Link href="/profile" className="flex items-center gap-1.5 text-muted-foreground hover:text-primary transition-colors">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-primary text-primary-foreground`}>
-                  {userName?.charAt(0)?.toUpperCase() ?? <User className="w-3 h-3" />}
+              <Link href="/profile" className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary">
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                  {userName?.charAt(0)?.toUpperCase() ?? <User className="h-3 w-3" />}
                 </div>
               </Link>
 
@@ -85,17 +88,16 @@ export default async function Navbar() {
             <>
               <ThemeToggle />
               <LanguageToggle />
-              <Link href="/auth/login" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="/auth/login" className="text-muted-foreground transition-colors hover:text-primary">
                 Login
               </Link>
-              <Link href="/auth/register" className="bg-primary text-primary-foreground px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity">
+              <Link href="/auth/register" className="rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90">
                 Register
               </Link>
             </>
           )}
         </div>
 
-        {/* Mobile */}
         <div className="flex items-center gap-1 md:hidden">
           <ThemeToggle />
           <MobileMenu links={links} session={!!session} isAdmin={isAdmin} />

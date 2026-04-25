@@ -2,13 +2,14 @@ import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { BarChart3, Users, MapPin, Calendar, TrendingUp } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminAnalyticsPage() {
   const session = await getAuthSession();
-  if (!session || (session.user as any).role !== "ADMIN") redirect("/");
+  if (!session || session.user.role !== "ADMIN") redirect("/");
 
   const [totalUsers, totalBookings, totalDestinations, totalRevenue, bookingsByStatus, popularDestinations, recentBookings] = await Promise.all([
     prisma.user.count(),
@@ -102,7 +103,16 @@ export default async function AdminAnalyticsPage() {
               {popularDestinations.map((d, i) => (
                 <div key={d.id} className="flex items-center gap-3">
                   <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
-                  {d.images[0] && <img src={d.images[0]} alt={d.title} className="w-8 h-8 rounded-lg object-cover flex-shrink-0" />}
+                  {d.images[0] && (
+                    <Image
+                      src={d.images[0]}
+                      alt={d.title}
+                      width={32}
+                      height={32}
+                      unoptimized
+                      className="h-8 w-8 rounded-lg object-cover flex-shrink-0"
+                    />
+                  )}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{d.title}</p>
                     <p className="text-xs text-muted-foreground">{d._count.bookings} bookings · {d._count.favorites} saves</p>

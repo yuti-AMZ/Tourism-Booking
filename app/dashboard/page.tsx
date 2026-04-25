@@ -1,11 +1,12 @@
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { MapPin, Calendar, Users, Heart, LayoutDashboard, Sparkles } from "lucide-react";
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { MapPin, Calendar, Users, Heart, LayoutDashboard, Sparkles } from "lucide-react";
 import CancelButton from "@/components/booking/cancel-button";
-import { getRecommendations } from "@/lib/recommendations";
 import ShareWishlist from "@/components/dashboard/share-wishlist";
+import { getRecommendations } from "@/lib/recommendations";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ export default async function DashboardPage() {
   const session = await getAuthSession();
   if (!session) redirect("/auth/login");
 
-  const userId = (session.user as any).id;
+  const userId = session.user.id;
 
   const [bookings, favorites, recommendations] = await Promise.all([
     prisma.booking.findMany({
@@ -33,95 +34,100 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-
-      {/* Header */}
       <div className="border-b bg-card">
-        <div className="max-w-5xl mx-auto px-4 py-8 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-2xl font-bold flex-shrink-0">
+        <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-8">
+          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-primary text-2xl font-bold text-primary-foreground">
             {initials}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <LayoutDashboard className="w-4 h-4 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Dashboard</span>
+              <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
+              <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Dashboard</span>
             </div>
-            <h1 className="text-2xl font-bold mt-0.5">Welcome back, {session.user?.name}</h1>
+            <h1 className="mt-0.5 text-2xl font-bold">Welcome back, {session.user?.name}</h1>
             <p className="text-sm text-muted-foreground">{session.user?.email}</p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-8">
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        <div className="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
-            { label: "Total Bookings", value: bookings.length  },
+            { label: "Total Bookings", value: bookings.length },
             { label: "Saved Places", value: favorites.length },
-            { label: "Confirmed", value: bookings.filter(b => b.status === "CONFIRMED").length },
-            { label: "Pending", value: bookings.filter(b => b.status === "PENDING").length },
-          ].map((s) => (
-            <div key={s.label} className="rounded-xl p-4 bg-card border hover:shadow-sm transition-shadow">
-              <div className="text-xl mb-1"></div>
-              <div className="text-2xl font-bold text-primary">{s.value}</div>
-              <div className="text-xs text-muted-foreground mt-0.5">{s.label}</div>
+            { label: "Confirmed", value: bookings.filter((b) => b.status === "CONFIRMED").length },
+            { label: "Pending", value: bookings.filter((b) => b.status === "PENDING").length },
+          ].map((stat) => (
+            <div key={stat.label} className="rounded-xl border bg-card p-4 transition-shadow hover:shadow-sm">
+              <div className="text-2xl font-bold text-primary">{stat.value}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">{stat.label}</div>
             </div>
           ))}
         </div>
 
-        {/* Bookings */}
         <section className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-primary" /> My Bookings
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <Calendar className="h-5 w-5 text-primary" /> My Bookings
             </h2>
-            <Link href="/destinations" className="text-xs text-primary hover:underline font-medium">
+            <Link href="/destinations" className="text-xs font-medium text-primary hover:underline">
               + New booking
             </Link>
           </div>
 
           {bookings.length === 0 ? (
-            <div className="text-center py-12 border rounded-2xl bg-card">
-              <div className="text-4xl mb-3">🏕️</div>
-              <p className="text-muted-foreground text-sm mb-3">No bookings yet</p>
-              <Link href="/destinations" className="text-primary font-semibold hover:underline text-sm">
-                Explore destinations →
+            <div className="rounded-2xl border bg-card py-12 text-center">
+              <div className="mb-3 text-4xl font-black tracking-[0.2em] text-primary">ET</div>
+              <p className="mb-3 text-sm text-muted-foreground">No bookings yet</p>
+              <Link href="/destinations" className="text-sm font-semibold text-primary hover:underline">
+                Explore destinations {"->"}
               </Link>
             </div>
           ) : (
             <div className="space-y-3">
-              {bookings.map((b) => (
-                <div key={b.id} className="border rounded-xl p-4 flex gap-4 items-start bg-card hover:shadow-sm transition-shadow">
-                  {b.destination.images[0] ? (
-                    <img src={b.destination.images[0]} alt={b.destination.title} className="w-16 h-16 object-cover rounded-lg flex-shrink-0" />
+              {bookings.map((booking) => (
+                <div key={booking.id} className="flex items-start gap-4 rounded-xl border bg-card p-4 transition-shadow hover:shadow-sm">
+                  {booking.destination.images[0] ? (
+                    <Image
+                      src={booking.destination.images[0]}
+                      alt={booking.destination.title}
+                      width={64}
+                      height={64}
+                      unoptimized
+                      className="h-16 w-16 flex-shrink-0 rounded-lg object-cover"
+                    />
                   ) : (
-                    <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center text-xl flex-shrink-0">🇪🇹</div>
+                    <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-bold">ET</div>
                   )}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2 flex-wrap">
-                      <h3 className="font-semibold text-sm">{b.destination.title}</h3>
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
-                        b.status === "CONFIRMED" ? "bg-primary/10 text-primary" :
-                        b.status === "CANCELLED" ? "bg-destructive/10 text-destructive" :
-                        "bg-muted text-muted-foreground"
-                      }`}>
-                        {b.status}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <h3 className="text-sm font-semibold">{booking.destination.title}</h3>
+                      <span
+                        className={`flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
+                          booking.status === "CONFIRMED"
+                            ? "bg-primary/10 text-primary"
+                            : booking.status === "CANCELLED"
+                              ? "bg-destructive/10 text-destructive"
+                              : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {booking.status}
                       </span>
                     </div>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5">
+                    <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3" /> {b.destination.location}
+                        <MapPin className="h-3 w-3" /> {booking.destination.location}
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(b.checkIn).toLocaleDateString()} → {new Date(b.checkOut).toLocaleDateString()}
+                        <Calendar className="h-3 w-3" />
+                        {new Date(booking.checkIn).toLocaleDateString()} {"->"} {new Date(booking.checkOut).toLocaleDateString()}
                       </span>
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Users className="w-3 h-3" /> {b.guests} guest{b.guests > 1 ? "s" : ""}
+                        <Users className="h-3 w-3" /> {booking.guests} guest{booking.guests > 1 ? "s" : ""}
                       </span>
                     </div>
-                    <p className="mt-1.5 text-sm font-bold text-primary">${b.totalPrice}</p>
-                    {b.status === "PENDING" && <CancelButton bookingId={b.id} />}
+                    <p className="mt-1.5 text-sm font-bold text-primary">${booking.totalPrice}</p>
+                    {booking.status === "PENDING" && <CancelButton bookingId={booking.id} />}
                   </div>
                 </div>
               ))}
@@ -129,37 +135,43 @@ export default async function DashboardPage() {
           )}
         </section>
 
-        {/* Favorites */}
         <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold flex items-center gap-2">
-              <Heart className="w-5 h-5 text-primary" /> Saved Destinations
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-lg font-bold">
+              <Heart className="h-5 w-5 text-primary" /> Saved Destinations
             </h2>
             <ShareWishlist userId={userId} />
           </div>
 
           {favorites.length === 0 ? (
-            <div className="text-center py-12 border rounded-2xl bg-card">
-              <div className="text-4xl mb-3">💚</div>
-              <p className="text-muted-foreground text-sm">No saved destinations yet</p>
+            <div className="rounded-2xl border bg-card py-12 text-center">
+              <div className="mb-3 text-4xl font-black tracking-[0.2em] text-primary">ET</div>
+              <p className="text-sm text-muted-foreground">No saved destinations yet</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {favorites.map((f) => (
-                <Link key={f.id} href={`/destinations/${f.destination.slug}`}>
-                  <div className="border rounded-xl overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 duration-200 bg-card">
-                    {f.destination.images[0] ? (
-                      <img src={f.destination.images[0]} alt={f.destination.title} className="w-full h-32 object-cover" />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {favorites.map((favorite) => (
+                <Link key={favorite.id} href={`/destinations/${favorite.destination.slug}`}>
+                  <div className="overflow-hidden rounded-xl border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                    {favorite.destination.images[0] ? (
+                      <Image
+                        src={favorite.destination.images[0]}
+                        alt={favorite.destination.title}
+                        width={400}
+                        height={128}
+                        unoptimized
+                        className="h-32 w-full object-cover"
+                      />
                     ) : (
-                      <div className="w-full h-32 bg-muted flex items-center justify-center text-3xl">🇪🇹</div>
+                      <div className="flex h-32 w-full items-center justify-center bg-muted text-sm font-bold">ET</div>
                     )}
                     <div className="p-3">
-                      <h3 className="font-semibold text-sm">{f.destination.title}</h3>
-                      <p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                        <MapPin className="w-3 h-3" /> {f.destination.location}
+                      <h3 className="text-sm font-semibold">{favorite.destination.title}</h3>
+                      <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin className="h-3 w-3" /> {favorite.destination.location}
                       </p>
                       <p className="mt-1 text-sm font-bold text-primary">
-                        ${f.destination.price}
+                        ${favorite.destination.price}
                         <span className="text-xs font-normal text-muted-foreground"> / night</span>
                       </p>
                     </div>
@@ -169,26 +181,36 @@ export default async function DashboardPage() {
             </div>
           )}
         </section>
-        {/* Recommendations */}
+
         {recommendations.length > 0 && (
           <section className="mt-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-primary" />
+            <div className="mb-4 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
               <h2 className="text-lg font-bold">Recommended for You</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {recommendations.map((d) => (
-                <Link key={d.id} href={`/destinations/${d.slug}`}>
-                  <div className="border rounded-xl overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 duration-200 bg-card">
-                    {d.images[0] ? (
-                      <img src={d.images[0]} alt={d.title} className="w-full h-28 object-cover" />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {recommendations.map((destination) => (
+                <Link key={destination.id} href={`/destinations/${destination.slug}`}>
+                  <div className="overflow-hidden rounded-xl border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                    {destination.images[0] ? (
+                      <Image
+                        src={destination.images[0]}
+                        alt={destination.title}
+                        width={400}
+                        height={112}
+                        unoptimized
+                        className="h-28 w-full object-cover"
+                      />
                     ) : (
-                      <div className="w-full h-28 bg-muted flex items-center justify-center text-3xl">🇪🇹</div>
+                      <div className="flex h-28 w-full items-center justify-center bg-muted text-sm font-bold">ET</div>
                     )}
                     <div className="p-3">
-                      <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{d.category}</span>
-                      <h3 className="font-semibold text-sm mt-1 line-clamp-1">{d.title}</h3>
-                      <p className="text-xs font-bold text-primary mt-1">${d.price}<span className="font-normal text-muted-foreground"> / night</span></p>
+                      <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-xs text-primary">{destination.category}</span>
+                      <h3 className="mt-1 line-clamp-1 text-sm font-semibold">{destination.title}</h3>
+                      <p className="mt-1 text-xs font-bold text-primary">
+                        ${destination.price}
+                        <span className="font-normal text-muted-foreground"> / night</span>
+                      </p>
                     </div>
                   </div>
                 </Link>

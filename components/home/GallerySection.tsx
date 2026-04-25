@@ -1,6 +1,5 @@
 "use client";
 // Gallery section (photo grid)
-import { useState } from "react";
 import Image from "next/image";
 
 const photos = [
@@ -19,8 +18,7 @@ const photos = [
 ];
 
 export default function GallerySection() {
-  const [active, setActive] = useState("All");
-  const filtered = active === "All" ? photos : photos.filter((p) => p.category === active);
+  const filtered = photos;
   return (
     <section id="gallery" className="py-20 bg-background">
       <div className="max-w-6xl mx-auto px-4">

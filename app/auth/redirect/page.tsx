@@ -12,7 +12,7 @@ export default function AuthRedirectPage() {
     if (status === "loading") return;
     if (!session) { router.push("/auth/login"); return; }
 
-    const role = (session.user as any)?.role;
+    const role = session.user?.role;
     if (role === "ADMIN") {
       router.push("/admin/analytics");
     } else {

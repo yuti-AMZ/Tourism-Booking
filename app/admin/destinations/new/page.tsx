@@ -4,7 +4,7 @@ import AddDestinationForm from "@/components/admin/add-destination-form";
 
 export default async function NewDestinationPage() {
   const session = await getAuthSession();
-  if (!session || (session.user as any).role !== "ADMIN") redirect("/");
+  if (!session || session.user.role !== "ADMIN") redirect("/");
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">

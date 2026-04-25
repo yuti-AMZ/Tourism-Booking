@@ -11,7 +11,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   const booking = await prisma.booking.findUnique({ where: { id } });
   if (!booking) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  if (booking.userId !== (session.user as any).id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (booking.userId !== session.user.id) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const updated = await prisma.booking.update({
     where: { id },

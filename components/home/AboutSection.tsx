@@ -1,7 +1,6 @@
 // About section
 
 "use client";
-import Image from "next/image";
 import { Users, Globe, HeartHandshake, Star } from "lucide-react";
 
 export default function AboutSection() {

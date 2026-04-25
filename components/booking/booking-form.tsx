@@ -8,6 +8,18 @@ import { toast } from "sonner";
 import { useLang } from "@/lib/language-context";
 import BookingConfirmation from "./booking-confirmation";
 
+type BookingConfirmationData = {
+  id: string;
+  destination: string;
+  location: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  totalPrice: number;
+  userName: string;
+  userEmail: string;
+};
+
 export default function BookingForm({
   destinationId,
   pricePerNight,
@@ -23,7 +35,7 @@ export default function BookingForm({
   const { t } = useLang();
   const [form, setForm] = useState({ checkIn: "", checkOut: "", guests: 1 });
   const [loading, setLoading] = useState(false);
-  const [confirmation, setConfirmation] = useState<any>(null);
+  const [confirmation, setConfirmation] = useState<BookingConfirmationData | null>(null);
 
   const days =
     form.checkIn && form.checkOut

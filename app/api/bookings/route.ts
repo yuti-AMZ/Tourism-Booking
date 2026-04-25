@@ -8,7 +8,7 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const bookings = await prisma.booking.findMany({
-    where: { userId: (session.user as any).id },
+    where: { userId: session.user.id },
     include: { destination: true },
     orderBy: { createdAt: "desc" },
   });
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const booking = await prisma.booking.create({
     data: {
-      userId: (session.user as any).id,
+      userId: session.user.id,
       destinationId,
       checkIn: new Date(checkIn),
       checkOut: new Date(checkOut),

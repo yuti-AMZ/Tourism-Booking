@@ -4,114 +4,140 @@ const prisma = new PrismaClient({
   datasourceUrl: process.env.DATABASE_URL,
 });
 
+const destinations = [
+  {
+    slug: "lalibela-rock-hewn-churches",
+    title: "Lalibela Rock-Hewn Churches",
+    description:
+      "Lalibela is one of Ethiopia's most sacred destinations, famous for its medieval churches carved directly into volcanic rock. Travelers come for pilgrimage history, spiritual atmosphere, and extraordinary architecture that feels unlike anywhere else in the world.",
+    location: "Lalibela, Amhara Region",
+    price: 120,
+    category: "Heritage",
+    images: ["/images/lalibela.jpg"],
+    rating: 4.9,
+  },
+  {
+    slug: "simien-mountains-national-park",
+    title: "Simien Mountains National Park",
+    description:
+      "The Simien Mountains offer dramatic cliffs, deep valleys, and some of the best trekking scenery in Africa. It is a UNESCO World Heritage Site known for gelada baboons, highland wildlife, and sweeping mountain views.",
+    location: "Simien Mountains, Amhara Region",
+    price: 95,
+    category: "Adventure",
+    images: ["/images/Simien-mountains.jpg"],
+    rating: 4.8,
+  },
+  {
+    slug: "danakil-depression",
+    title: "Danakil Depression",
+    description:
+      "The Danakil Depression is one of the hottest and most surreal landscapes on Earth, with colorful sulfur fields, salt flats, and volcanic activity. It is built for travelers looking for a bold, extreme, and unforgettable expedition.",
+    location: "Afar Region",
+    price: 150,
+    category: "Adventure",
+    images: ["/images/denakil.jpg"],
+    rating: 4.7,
+  },
+  {
+    slug: "entoto-hills",
+    title: "Entoto Hills",
+    description:
+      "Entoto Hills rise above Addis Ababa with eucalyptus forests, cooler air, panoramic city views, and important imperial history. It is a great destination for visitors who want nature, local culture, and a calm escape near the capital.",
+    location: "Addis Ababa",
+    price: 70,
+    category: "Nature",
+    images: ["/images/entonto.jpg"],
+    rating: 4.5,
+  },
+  {
+    slug: "ethiopian-highlands",
+    title: "Ethiopian Highlands",
+    description:
+      "The Ethiopian Highlands are defined by rolling ridges, vast green landscapes, and a sense of scale that makes every journey feel cinematic. This destination is ideal for scenic drives, photography, and travelers who want to experience Ethiopia's natural beauty.",
+    location: "Ethiopian Highlands",
+    price: 105,
+    category: "Landscape",
+    images: ["/images/ethio landscape.jpg"],
+    rating: 4.6,
+  },
+  {
+    slug: "gondar-royal-enclosure",
+    title: "Gondar Royal Enclosure",
+    description:
+      "Gondar was once Ethiopia's imperial capital and remains one of the country's most important historic cities. The Royal Enclosure is famous for its castles, palaces, and strong connection to Ethiopia's royal legacy.",
+    location: "Gondar, Amhara Region",
+    price: 85,
+    category: "Heritage",
+    images: ["/images/gondar.jpg"],
+    rating: 4.6,
+  },
+  {
+    slug: "harar-old-walled-city",
+    title: "Harar Old Walled City",
+    description:
+      "Harar is a UNESCO-listed city celebrated for its walled historic center, colorful alleyways, Islamic heritage, and distinctive local culture. It is one of the most character-rich urban destinations in Ethiopia.",
+    location: "Harar, Harari Region",
+    price: 90,
+    category: "Culture",
+    images: ["/images/harar.jpg"],
+    rating: 4.6,
+  },
+  {
+    slug: "omo-valley-cultural-journey",
+    title: "Omo Valley Cultural Journey",
+    description:
+      "The Omo Valley is known for its diverse communities, ceremonies, dress traditions, and deep cultural heritage. This destination offers a rare chance to learn about living traditions shaped across generations.",
+    location: "Omo Valley, Southern Ethiopia",
+    price: 130,
+    category: "Culture",
+    images: ["/images/omo.jpg"],
+    rating: 4.8,
+  },
+  {
+    slug: "bale-mountains-national-park",
+    title: "Bale Mountains National Park",
+    description:
+      "Bale Mountains National Park is one of Ethiopia's best wildlife and trekking destinations, home to the Ethiopian wolf, afroalpine plateaus, and misty forests. It is perfect for nature lovers who want cooler air and rare biodiversity.",
+    location: "Oromia Region",
+    price: 110,
+    category: "Wildlife",
+    images: ["/images/Bale Mountains.jpg"],
+    rating: 4.7,
+  },
+  {
+    slug: "axum-obelisks",
+    title: "Axum Obelisks",
+    description:
+      "Axum was the heart of an ancient kingdom that shaped the history of the Horn of Africa. The giant stone obelisks and archaeological remains make it one of Ethiopia's most important historical destinations.",
+    location: "Axum, Tigray Region",
+    price: 100,
+    category: "Heritage",
+    images: ["/images/Axum.jpg", "/images/Axum1.jpg"],
+    rating: 4.8,
+  },
+];
+
 async function main() {
-  // Delete related records first, then destinations
   await prisma.review.deleteMany({});
   await prisma.favorite.deleteMany({});
   await prisma.booking.deleteMany({});
   await prisma.destination.deleteMany({});
-  console.log("🗑️  Cleared existing destinations and related records");
+  console.log("Cleared existing destinations and related records");
 
-  const destinations = [
-    {
-      slug: "lalibela-rock-churches",
-      title: "Lalibela – Rock-Hewn Churches",
-      description: "Lalibela is home to 11 medieval monolithic churches carved directly from solid red volcanic rock. A UNESCO World Heritage Site and one of Africa's most sacred pilgrimage destinations, often called the 'New Jerusalem' of Africa.",
-      location: "Lalibela, Amhara Region",
-      price: 120,
-      category: "Heritage",
-      images: ["/images/lalibela.jpg"],
-      rating: 4.9,
-    },
-    {
-      slug: "simien-mountains",
-      title: "Simien Mountains National Park",
-      description: "A UNESCO World Heritage Site featuring dramatic escarpments, deep valleys, and sharp peaks. Home to the endangered Gelada baboon, Ethiopian wolf, and Walia ibex. Offers some of Africa's most spectacular trekking.",
-      location: "Gondar, Amhara Region",
-      price: 95,
-      category: "Adventure",
-      images: ["/images/Simien Mountains, Ethiopia.jpg"],
-      rating: 4.8,
-    },
-    {
-      slug: "danakil-depression",
-      title: "Danakil Depression",
-      description: "One of the hottest and most alien landscapes on Earth. The Danakil Depression features colorful sulfur springs, lava lakes, and salt flats. A truly otherworldly adventure for the bold traveler.",
-      location: "Afar Region",
-      price: 150,
-      category: "Adventure",
-      images: ["/images/denakil.jpg"],
-      rating: 4.7,
-    },
-    {
-      slug: "addis-ababa-city",
-      title: "Addis Ababa – Capital City",
-      description: "Ethiopia's vibrant capital sits at 2,400m altitude. Explore the National Museum (home of 'Lucy'), the Merkato — Africa's largest open-air market, the Holy Trinity Cathedral, and world-class Ethiopian cuisine.",
-      location: "Addis Ababa",
-      price: 80,
-      category: "City",
-      images: ["/images/entonto.jpg"],
-      rating: 4.5,
-    },
-    {
-      slug: "omo-valley-tribes",
-      title: "Omo Valley – Tribal Culture",
-      description: "The Omo Valley is home to over 50 indigenous tribes including the Mursi, Hamar, and Karo peoples. Experience ancient traditions, colorful ceremonies, and a way of life unchanged for centuries.",
-      location: "Southern Nations Region",
-      price: 130,
-      category: "Culture",
-      images: ["/images/omo.jpg"],
-      rating: 4.8,
-    },
-    {
-      slug: "gondar-royal-enclosure",
-      title: "Gondar – Royal Enclosure",
-      description: "Known as the 'Camelot of Africa', Gondar was Ethiopia's imperial capital in the 17th century. The Royal Enclosure contains six castles and palaces built by successive emperors, a UNESCO World Heritage Site.",
-      location: "Gondar, Amhara Region",
-      price: 85,
-      category: "Heritage",
-      images: ["/images/gondar.jpg"],
-      rating: 4.6,
-    },
-    {
-      slug: "bale-mountains",
-      title: "Bale Mountains National Park",
-      description: "Home to the largest population of Ethiopian wolves in the world. The Sanetti Plateau is Africa's largest Afroalpine ecosystem. Trek through giant heather forests and spot mountain nyala and rare birds.",
-      location: "Oromia Region",
-      price: 110,
-      category: "Wildlife",
-      images: ["/images/Bale Mountains.jpg"],
-      rating: 4.7,
-    },
-    {
-      slug: "axum-ancient-city",
-      title: "Axum – Ancient Obelisks",
-      description: "Axum was the capital of the ancient Aksumite Empire. Visit towering obelisks, underground tombs, and the Church of St. Mary of Zion — said to house the Ark of the Covenant.",
-      location: "Tigray Region",
-      price: 100,
-      category: "Heritage",
-      images: ["/images/Axum.jpg"],
-      rating: 4.8,
-    },
-    {
-      slug: "harar-old-city",
-      title: "Harar – Walled City",
-      description: "Harar is one of the holiest cities in Islam and a UNESCO World Heritage Site. Its ancient walled city contains 82 mosques and hundreds of shrines, with a unique culture and the famous hyena feeding tradition.",
-      location: "Harari Region",
-      price: 90,
-      category: "Culture",
-      images: ["/images/harar.jpg"],
-      rating: 4.6,
-    },
-  ];
-
-  for (const dest of destinations) {
-    await prisma.destination.create({ data: dest });
+  for (const destination of destinations) {
+    await prisma.destination.create({
+      data: destination,
+    });
   }
 
-  console.log(`✅ Seeded ${destinations.length} Ethiopian destinations`);
+  console.log(`Seeded ${destinations.length} destinations from local project images`);
 }
 
 main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(() => prisma.$disconnect());
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

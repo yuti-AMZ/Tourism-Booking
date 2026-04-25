@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -39,17 +39,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (session.user as any).id = token.id;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (session.user as any).role = token.role;
+        session.user.id = token.id;
+        session.user.role = token.role;
       }
       return session;
     },

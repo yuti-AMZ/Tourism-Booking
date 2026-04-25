@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -124,7 +125,14 @@ export default function AddDestinationForm() {
         <Input type="file" accept="image/*" onChange={handleImageUpload} />
         {uploading && <p className="text-xs text-blue-500 mt-1">Uploading...</p>}
         {form.images && (
-          <img src={form.images} alt="Preview" className="mt-2 rounded w-32 h-32 object-cover border" />
+          <Image
+            src={form.images}
+            alt="Preview"
+            width={128}
+            height={128}
+            unoptimized
+            className="mt-2 h-32 w-32 rounded border object-cover"
+          />
         )}
       </div>
       <div>

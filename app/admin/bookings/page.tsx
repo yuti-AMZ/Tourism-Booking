@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function AdminBookingsPage() {
   const session = await getAuthSession();
-  if (!session || (session.user as any).role !== "ADMIN") redirect("/");
+  if (!session || session.user.role !== "ADMIN") redirect("/");
 
   const bookings = await prisma.booking.findMany({
     include: {

@@ -7,7 +7,7 @@ export async function GET() {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const favorites = await prisma.favorite.findMany({
-    where: { userId: (session.user as any).id },
+    where: { userId: session.user.id },
     include: { destination: true },
     orderBy: { createdAt: "desc" },
   });
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   const { destinationId } = await req.json();
 
   const existing = await prisma.favorite.findUnique({
-    where: { userId_destinationId: { userId: (session.user as any).id, destinationId } },
+    where: { userId_destinationId: { userId: session.user.id, destinationId } },
   });
 
   if (existing) {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   }
 
   await prisma.favorite.create({
-    data: { userId: (session.user as any).id, destinationId },
+    data: { userId: session.user.id, destinationId },
   });
 
   return NextResponse.json({ favorited: true });
