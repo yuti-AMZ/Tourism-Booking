@@ -12,7 +12,7 @@ export default function LoginPage() {
       {/* Left decorative panel */}
       <div className="hidden md:block relative w-1/2">
         <Image
-          src="/images/home-heeroo.jpg"
+          src="/images/home-heroo.jpg"
           alt="Simien Mountains Ethiopia"
           fill
           className="object-cover"
