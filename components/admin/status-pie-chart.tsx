@@ -40,7 +40,7 @@ export default function StatusPieChart({ data }: Props) {
             ))}
           </Pie>
           <Tooltip 
-            formatter={(value: number) => [`${value} bookings`, "Count"]}
+            formatter={(value: any) => [`${value} bookings`, "Count"]}
             contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }}
           />
           <Legend />

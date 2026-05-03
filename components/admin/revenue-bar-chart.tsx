@@ -37,7 +37,7 @@ export default function RevenueBarChart({ data }: Props) {
             width={60}
           />
           <Tooltip 
-            formatter={(value: number) => [`$${value.toLocaleString()}`, "Revenue"]}
+            formatter={(value: any) => [`$${Number(value).toLocaleString()}`, "Revenue"]}
             cursor={{ fill: "rgba(0,0,0,0.05)" }}
             contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}
           />
