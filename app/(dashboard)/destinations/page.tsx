@@ -72,18 +72,17 @@ export default async function DestinationsPage() {
                 className="group overflow-hidden rounded-xl border bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
                 <Link href={`/destinations/${destination.slug}`}>
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden h-48 w-full bg-muted">
                     {destination.images?.[0] ? (
                       <Image
                         src={destination.images[0]}
                         alt={destination.title}
-                        width={640}
-                        height={192}
-                        unoptimized
-                        className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="flex h-48 w-full items-center justify-center bg-muted text-lg font-bold">Map</div>
+                      <div className="flex h-full w-full items-center justify-center text-lg font-bold">Map</div>
                     )}
                     <span className="absolute left-3 top-3 rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
                       {destination.category}

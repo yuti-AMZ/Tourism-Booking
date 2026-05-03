@@ -1,16 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
-type UserWithRole = {
-  name?: string;
-  role?: string;
-};
 import "./globals.css";
 import Providers from "./providers";
-import Navbar from "@/components/layout/Navbar";
 import PWARegister from "@/components/PWARegister";
-import PageTransition from "@/components/layout/PageTransition";
-import { getAuthSession } from "@/lib/auth";
-import Sidebar from "@/components/layout/Sidebar";
 
 export const metadata: Metadata = {
   title: "EthioTour – Discover Ethiopia",
@@ -27,14 +19,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getAuthSession();
-  const isLoggedIn = !!session;
-  const user = session?.user as UserWithRole | undefined;
-  const isAdmin = user?.role === "ADMIN";
-  const userName = user?.name ?? "User";
-  const userInitial = userName.charAt(0).toUpperCase();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -50,21 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <PWARegister />
-          {isLoggedIn ? (
-            <div className="flex min-h-screen">
-              <Sidebar isAdmin={isAdmin} userName={userName} userInitial={userInitial} />
-              <div className="flex-1 ml-0 md:ml-56 min-w-0">
-                <PageTransition>{children}</PageTransition>
-              </div>
-            </div>
-          ) : (
-            <>
-              <Navbar />
-              <main>
-                <PageTransition>{children}</PageTransition>
-              </main>
-            </>
-          )}
+          {children}
         </Providers>
       </body>
     </html>

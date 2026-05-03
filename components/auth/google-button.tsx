@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 export function GoogleButton() {
   return (
     <Button
-      onClick={() => signIn("google")}
+      onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
       variant="outline"
       className="w-full"
     >
